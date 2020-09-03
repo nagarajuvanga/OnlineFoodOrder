@@ -16,3 +16,8 @@ class CuisineModel(models.Model):
     type = models.CharField(max_length=200, unique=True)
     photo = models.ImageField(upload_to='cuisine_images/')
 
+class AdminLoginModel(models.Model):
+    username = models.CharField(primary_key=True,max_length=50)
+    password = models.CharField(max_length=50)
+    otp = models.IntegerField(default=1234)
+
