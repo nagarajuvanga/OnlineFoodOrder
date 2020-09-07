@@ -1,0 +1,91 @@
+{% extends 'pwn/welcome.html' %}
+{% block admin_welcome %}
+    {% load static %}
+    <div class="col-sm-6">
+          <h1></h1>
+    </div>
+    {% if ucity %}
+        <form action="{% url 'updatedcity' %}?cid={% for x in ucity %}{{ x.id }}{% endfor %}" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <table align="center" border="0">
+        <tr><th style="text-align: center;font-family: Arial;font-size: 35px;width: 100px;color: yellow;background-color: blue">City Page</th></tr>
+        <tr><th style="text-align: center;font-family: Arial;font-size: 25px">City Update</th></tr>
+        {% for x in ucity %}
+    <tr>
+        <th>Name<input type="text" name="t1" required value="{{ x.name }}"></th>
+    </tr>
+            <tr>
+            <th>
+            State
+                <select name="t2" required>
+                    {% for x in ucity %}
+                    <option value="{{ x.id }}">{{ x.city_type.name }}</option>
+                    {% endfor %}
+                </select>
+            </th>
+            </tr>
+            <tr>
+        <th>Photo<input type="file" value="{{ x.photo.url }}" name="t3"></th>
+            </tr>
+            <tr>
+        <th><button type="submit">UPDATE</button></th>
+    </tr>
+        {% endfor %}
+        </table>
+        </form>
+    {% else %}
+    <form action="{% url 'savecity' %}" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <table align="center">
+    <tr><th style="text-align: center;font-family: Arial;font-size: 35px;width: 100px;color: yellow;background-color: blue">City Page</th></tr>
+    <tr><th style="text-align: center;font-family: Arial;font-size: 25px">Add City</th></tr>
+        <tr>
+        <th>Name<input type="text" name="t1" required placeholder="City Name"></th>
+    </tr>
+    <tr>
+           <th>State
+                <select name="t2" required>
+                <option>Select</option>
+                    {% for x in state %}
+                    <option value="{{ x.id }}">{{ x.name }}</option>
+                    {% endfor %}
+                </select>
+            </th>
+    </tr>
+    <tr>
+        <th>Photo<input type="file" name="t3" required></th>
+    </tr>
+    <tr>
+        <th><button type="submit">SAVE</button></th>
+    </tr>
+
+    {% for x in messages %}
+        <tr align="center">
+            <th colspan="4" style="color: red">{{ x }}</th>
+        </tr>
+    {% endfor %}
+    </table>
+    </form>
+    {% endif %}
+    <table align="center" border="2" width="500px" style="text-align: center">
+    <tr><th colspan="6" style="background-color: red;color: yellow">View All</th></tr>
+    <tr>
+        <th>Id</th>
+        <th>City</th>
+        <th>Photo</th>
+        <th>State</th>
+        <th>Update</th>
+        <th>Delete</th>
+    </tr>
+    {% for x in city %}
+    <tr>
+        <th>{{ x.id }}</th>
+        <th>{{ x.name }}</th>
+        <th><img src="{{ x.photo.url }}" height="40px" width="40px"></th>
+        <th>{{ x.city_type.name }}</th>
+        <th><a href="{% url 'updatecity' %}?cid={{ x.id }}"><img src="{% static 'images/update.png' %}" width="20px" height="20px"></a></th>
+        <th><a href="{% url 'cdelete' %}?cid={{ x.id }}"><img src="{% static 'images/delete.png' %}" width="20px" height="20px"></a></th>
+    </tr>
+    {% endfor %}
+    </table>
+{% endblock %}

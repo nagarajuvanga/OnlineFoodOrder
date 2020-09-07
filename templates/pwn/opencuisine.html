@@ -1,0 +1,65 @@
+{% extends 'pwn/welcome.html' %}
+{% block admin_welcome %}
+    {% load static %}
+    <div class="col-sm-6">
+    </div>
+    {% if update %}
+     <form action="{% url 'updatedcuisine' %}?cid={% for x in update %}{{ x.id }}{% endfor %}" enctype="multipart/form-data" method="post" >
+        {% csrf_token %}
+       <table align="center">
+         <tr><th style="text-align: center;font-family: Arial;font-size: 35px;width: 100px;color: yellow;background-color: blue">Cuisine Page</th></tr>
+        <tr><th style="text-align: center;font-family: Arial;font-size: 25px">Cuisine Update</th></tr>
+        {% for x in update %}
+            <tr>
+                <th>Type<input type="text" name="t1" required value="{{ x.type }}"></th></tr>
+            <tr>
+                <th>Photo<input type="file" name="t2" value="{{ x.photo.url }}" required></th>
+            </tr>
+            <tr>
+                <th><button type="submit"> UPDATE </button></th>
+            </tr>
+        {% endfor %}
+        </table>
+       </form>
+{% else %}
+    <form method="post" action="{% url 'savecuisine' %}" enctype="multipart/form-data">
+    {% csrf_token %}
+        <table align="center">
+         <tr><th style="text-align: center;font-family: Arial;font-size: 35px;width: 100px;color: yellow;background-color: blue">Cuisine Page</th></tr>
+        <tr><th style="text-align: center;font-family: Arial;font-size: 25px">Add Cuisine</th></tr>
+            <tr>
+                <th>Type<input type="text" name="t1" required placeholder="Type"></th></tr>
+        <tr>
+            <th>Photo<input type="file" name="t2" required></th></tr>
+        <tr>
+                <th><button type="submit"> SAVE </button></th>
+            </tr>
+            {% for x in messages %}
+                <tr>
+                    <th style="color: red">{{ x }}</th>
+                </tr>
+            {% endfor %}
+        </table>
+    </form>
+    {% endif %}
+
+    <table border="2" align="center" width="500px" style="text-align: center">
+    <tr><th colspan="5" style="background-color: red;color: yellow">View All</th></tr>
+    <tr>
+        <th>id</th>
+        <th>Type</th>
+        <th>Photo</th>
+        <th>Update</th>
+        <th>Delete</th>
+    </tr>
+    {% for x in data %}
+        <tr>
+            <th>{{ x.id }}</th>
+            <th>{{ x.type }}</th>
+            <th><img src="{{ x.photo.url }}" height="40px" width="40px"></th>
+            <th><a href="{% url 'updatecuisine' %}?cid={{ x.id }}"><img src="{% static 'images/update.png' %}" width="20px" height="20px"></a></th>
+            <th><a href="{% url 'delete_cuisine' %}?cid={{ x.id }}"><img src="{% static 'images/delete.png' %}" width="20px" height="20px"></a></th>
+        </tr>
+    {% endfor %}
+    </table>
+{% endblock %}
