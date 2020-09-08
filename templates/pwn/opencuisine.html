@@ -13,7 +13,8 @@
             <tr>
                 <th>Type<input type="text" name="t1" required value="{{ x.type }}"></th></tr>
             <tr>
-                <th>Photo<input type="file" name="t2" value="{{ x.photo.url }}" required></th>
+{#                <th>Photo<img src="{{ x.photo.url }}" width="50" height="50"><input type="file" name="t2" required></th>#}
+            <th>Photo<input type="file" name="t2" required>{{ x.photo.url }}</th>
             </tr>
             <tr>
                 <th><button type="submit"> UPDATE </button></th>
@@ -58,7 +59,7 @@
             <th>{{ x.type }}</th>
             <th><img src="{{ x.photo.url }}" height="40px" width="40px"></th>
             <th><a href="{% url 'updatecuisine' %}?cid={{ x.id }}"><img src="{% static 'images/update.png' %}" width="20px" height="20px"></a></th>
-            <th><a href="{% url 'delete_cuisine' %}?cid={{ x.id }}"><img src="{% static 'images/delete.png' %}" width="20px" height="20px"></a></th>
+            <th><a href="{% url 'delete_cuisine' %}?cid={{ x.id }}" onclick="return confirm('Are you sure you want to delete?')"><img src="{% static 'images/delete.png' %}" width="20px" height="20px"></a></th>
         </tr>
     {% endfor %}
     </table>
